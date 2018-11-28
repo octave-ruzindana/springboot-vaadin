@@ -36,4 +36,8 @@ public class TodoService {
     public void add(Todo newTodo){
         todoRepository.save(newTodo);
     }
+
+    public void delete(Todo removedTodo) {
+        todoRepository.delete(removedTodo);
+    }
 }

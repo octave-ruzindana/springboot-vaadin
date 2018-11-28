@@ -20,7 +20,7 @@ public class MainView extends VerticalLayout implements TodoHandler {
 
         Component header = new H2("My todo List");
         Component addForm = new AddTodoForm(this);
-        this.todoList = new TodoList();
+        this.todoList = new TodoList(this);
 
         updateList();
 
@@ -35,6 +35,12 @@ public class MainView extends VerticalLayout implements TodoHandler {
     @Override
     public void onAddedTodo(Todo newTodo) {
         todoService.add(newTodo);
+        updateList();
+    }
+
+    @Override
+    public void onDeletedTodo(Todo todo) {
+        todoService.delete(todo);
         updateList();
     }
 }
