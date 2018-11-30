@@ -4,6 +4,7 @@ import be.octave.springbootvaadin.components.AddTodoForm;
 import be.octave.springbootvaadin.components.TodoList;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.router.Route;
@@ -22,6 +23,7 @@ public class MainView extends VerticalLayout implements TodoHandler {
         Component header = new H2("My todo List");
         Component addForm = new AddTodoForm(this);
         this.todoList = new TodoList(this);
+
         this.todoList.setDataProvider(DataProvider.fromCallbacks(query -> {
             return todoService.find(query.getLimit(), query.getOffset()).stream();
         }, query -> {return todoService.countAll();}));
@@ -32,7 +34,7 @@ public class MainView extends VerticalLayout implements TodoHandler {
 
     @Override
     public void onAddedTodo(Todo newTodo) {
-        todoService.add(newTodo);
+        todoService.saveOrpdate(newTodo);
         todoList.getDataProvider().refreshAll();
     }
 
@@ -40,5 +42,12 @@ public class MainView extends VerticalLayout implements TodoHandler {
     public void onDeletedTodo(Todo todo) {
         todoService.delete(todo);
         todoList.getDataProvider().refreshAll();
+    }
+
+    @Override
+    public void onUpdateTodo(Todo todo) {
+        todoService.saveOrpdate(todo);
+        todoList.getDataProvider().refreshItem(todo);// based equals
+        Notification.show("Todo "+ todo.getTitle()+ " has been updated");
     }
 }

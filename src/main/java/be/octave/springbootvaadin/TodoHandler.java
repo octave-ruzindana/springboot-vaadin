@@ -5,4 +5,6 @@ public interface TodoHandler {
     void onAddedTodo(Todo newTodo);
 
     void onDeletedTodo(Todo todo);
+
+    void onUpdateTodo(Todo todo);
 }

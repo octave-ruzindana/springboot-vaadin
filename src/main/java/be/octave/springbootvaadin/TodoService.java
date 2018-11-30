@@ -47,8 +47,8 @@ public class TodoService {
     }
 
 
-    public Todo add(Todo todo){
-        LOGGER.info("----------- Added Todo {} " , todo.getTitle());
+    public Todo saveOrpdate(Todo todo){
+        LOGGER.info("----------- Create or Update Todo {} with status done = {}" , todo.getTitle(), todo.isCompleted());
         return todoRepository.save(todo);
     }
 
@@ -56,6 +56,7 @@ public class TodoService {
         LOGGER.info("----------- Delete Todo with id" + todo.getId());
         todoRepository.delete(todo);
     }
+
 
     public int countAll() {
         LOGGER.info("----------- Counting Todo");
