@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
 @Entity
 public class Todo {
@@ -26,8 +27,7 @@ public class Todo {
         this.completed = completed;
     }
 
-    public Todo() {}
-
+    protected Todo() {}
 
     public int getId() {
         return id;
@@ -60,5 +60,18 @@ public class Todo {
                 ", title='" + title + '\'' +
                 ", completed=" + completed +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Todo todo = (Todo) o;
+        return id == todo.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
