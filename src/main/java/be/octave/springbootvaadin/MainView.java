@@ -8,16 +8,21 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.router.Route;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Route("")
 public class MainView extends VerticalLayout implements TodoHandler {
+
+    Logger LOG = LoggerFactory.getLogger(MainView.class);
 
     private TodoService todoService;
     private TodoList todoList;
 
     @Autowired
     public MainView(TodoService todoService) {
+        LOG.info("************ instatiating Main view");
         this.todoService = todoService;
 
         Component header = new H2("My todo List");

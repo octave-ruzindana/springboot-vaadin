@@ -8,8 +8,12 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AddTodoForm extends HorizontalLayout {
+
+    Logger LOG = LoggerFactory.getLogger(AddTodoForm.class);
 
     private Binder<Todo> binder = new Binder<>();
 
@@ -19,6 +23,8 @@ public class AddTodoForm extends HorizontalLayout {
     private TodoHandler todoHandler;
 
     public AddTodoForm(TodoHandler todoHandler) {
+        LOG.info("****** instatiating Form....");
+
         this.todoHandler = todoHandler;
 
         this.title = new TextField();

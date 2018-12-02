@@ -1,9 +1,6 @@
 package be.octave.springbootvaadin;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
@@ -22,9 +19,13 @@ public class Todo {
     @NotNull
     private boolean completed;
 
+    @Transient
+    private boolean editable;
+
     public Todo(String title, boolean completed) {
         this.title = title;
         this.completed = completed;
+        this.editable = false;
     }
 
     protected Todo() {}
@@ -73,5 +74,13 @@ public class Todo {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
     }
 }
