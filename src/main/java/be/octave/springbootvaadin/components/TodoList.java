@@ -17,6 +17,8 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Comparator;
+
 public class TodoList extends Grid<Todo> {
 
     Logger LOG = LoggerFactory.getLogger(TodoList.class);
@@ -31,7 +33,11 @@ public class TodoList extends Grid<Todo> {
 
         this.setSizeFull();
         this.addColumn(Todo::getId).setHeader("#");
-        this.addColumn(new ComponentRenderer<>(this::renderTitle)).setHeader("Title");
+        this.addColumn(new ComponentRenderer<>(this::renderTitle))
+                .setComparator(Comparator.comparing(Todo::getTitle))
+                .setSortable(true)
+                .setHeader("Title");
+
         this.addColumn(new ComponentRenderer<>(this::renderCompleted)).setHeader("Done ?");
         this.addColumn(new ComponentRenderer<>(this::renderActions));
     }

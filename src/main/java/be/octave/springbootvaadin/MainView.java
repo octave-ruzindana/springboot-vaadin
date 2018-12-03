@@ -7,10 +7,13 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.provider.DataProvider;
+import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.router.Route;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.stream.Stream;
 
 @Route("")
 public class MainView extends VerticalLayout implements TodoHandler {
@@ -28,13 +31,21 @@ public class MainView extends VerticalLayout implements TodoHandler {
         Component header = new H2("My todo List");
         Component addForm = new AddTodoForm(this);
         this.todoList = new TodoList(this);
+//        this.todoList.setItems(todoService.findAll()); // for in-memory sorting
 
-        this.todoList.setDataProvider(DataProvider.fromCallbacks(query -> {
-            return todoService.find(query.getLimit(), query.getOffset()).stream();
-        }, query -> {return todoService.countAll();}));
+        this.todoList.setDataProvider(DataProvider.fromCallbacks(this::findBy, this::countBy));
 
         setHeight("100vh");
         add(header,addForm, todoList);
+    }
+
+    private int countBy(Query<Todo, Void> query) {
+        return todoService.countAll();
+    }
+
+    private Stream<Todo> findBy(Query<Todo, Void> query) {
+        //query.getSortOrders()
+        return todoService.find(query.getLimit(), query.getOffset()).stream();
     }
 
     @Override
