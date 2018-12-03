@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -38,12 +39,6 @@ public class TodoService {
 
     public List<Todo> findAll(){
         return todoRepository.findAll();
-    }
-
-    public List<Todo> find(int limit, int offset){
-        LOGGER.info("----------- Find with params page {} and size {}", offset, limit);
-        Pageable page = PageRequest.of(offset, limit);
-        return todoRepository.findAll(page).getContent();
     }
 
 

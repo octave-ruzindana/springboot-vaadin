@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Comparator;
+import java.util.stream.Collectors;
 
 public class TodoList extends Grid<Todo> {
 
@@ -30,9 +31,9 @@ public class TodoList extends Grid<Todo> {
         LOG.info("****** instatiating Grid");
 
         this.handler = handler;
-
         this.setSizeFull();
-        this.addColumn(Todo::getId).setHeader("#");
+        this.addColumn(Todo::getId).
+                setHeader("#");
         this.addColumn(new ComponentRenderer<>(this::renderTitle))
                 .setComparator(Comparator.comparing(Todo::getTitle))
                 .setSortable(true)
@@ -40,6 +41,20 @@ public class TodoList extends Grid<Todo> {
 
         this.addColumn(new ComponentRenderer<>(this::renderCompleted)).setHeader("Done ?");
         this.addColumn(new ComponentRenderer<>(this::renderActions));
+        logSort();
+    }
+
+    private void logSort() {
+        this.addSortListener(event -> {
+            this.getDataCommunicator()
+                    .getBackEndSorting().stream()
+                    .map(querySortOrder -> String.format(
+                            "{sort property: %s, direction: %s}",
+                            querySortOrder.getSorted(),
+                            querySortOrder.getDirection()))
+                    .collect(Collectors.joining(", "));
+        });
+
     }
 
     public void toggleStatus(Todo todo) {

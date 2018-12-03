@@ -12,7 +12,13 @@ import com.vaadin.flow.router.Route;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import sun.management.snmp.util.MibLogger;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Route("")
@@ -22,11 +28,13 @@ public class MainView extends VerticalLayout implements TodoHandler {
 
     private TodoService todoService;
     private TodoList todoList;
+    private TodoRepository todoRepository;
 
     @Autowired
-    public MainView(TodoService todoService) {
+    public MainView(TodoService todoService, TodoRepository todoRepository) {
         LOG.info("************ instatiating Main view");
         this.todoService = todoService;
+        this.todoRepository = todoRepository;
 
         Component header = new H2("My todo List");
         Component addForm = new AddTodoForm(this);
@@ -45,7 +53,14 @@ public class MainView extends VerticalLayout implements TodoHandler {
 
     private Stream<Todo> findBy(Query<Todo, Void> query) {
         //query.getSortOrders()
-        return todoService.find(query.getLimit(), query.getOffset()).stream();
+        LOG.info("----------- Find todos with page {}, size {} and sort {}", query.getOffset(), query.getLimit(), query.getSortOrders());
+
+        List<Sort.Order> sortOders = query.getSortOrders().stream()
+                .map(sortQuery -> Sort.Order.by(sortQuery.getSorted()))
+                .collect(Collectors.toList());
+
+        Pageable page = PageRequest.of(query.getOffset(), query.getLimit(), Sort.by(sortOders));
+        return todoRepository.findAll(page).getContent().stream();
     }
 
     @Override
