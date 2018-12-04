@@ -8,6 +8,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.Query;
+import com.vaadin.flow.data.provider.SortDirection;
 import com.vaadin.flow.router.Route;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,14 +53,14 @@ public class MainView extends VerticalLayout implements TodoHandler {
     }
 
     private Stream<Todo> findBy(Query<Todo, Void> query) {
-        //query.getSortOrders()
-        LOG.info("----------- Find todos with page {}, size {} and sort {}", query.getOffset(), query.getLimit(), query.getSortOrders());
 
-        List<Sort.Order> sortOders = query.getSortOrders().stream()
-                .map(sortQuery -> Sort.Order.by(sortQuery.getSorted()))
+
+        List<Sort.Order> sortOrders = query.getSortOrders().stream()
+                .map(sortQuery -> sortQuery.getDirection().equals(SortDirection.ASCENDING) ? Sort.Order.asc(sortQuery.getSorted()) : Sort.Order.desc(sortQuery.getSorted()) )
                 .collect(Collectors.toList());
 
-        Pageable page = PageRequest.of(query.getOffset(), query.getLimit(), Sort.by(sortOders));
+        LOG.info("----------- Find todos with page {}, size {} and sort {}", query.getOffset(), query.getLimit(), sortOrders);
+        Pageable page = PageRequest.of(query.getOffset(), query.getLimit(), Sort.by(sortOrders));
         return todoRepository.findAll(page).getContent().stream();
     }
 
