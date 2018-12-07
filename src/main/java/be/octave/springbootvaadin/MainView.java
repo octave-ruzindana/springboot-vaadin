@@ -3,13 +3,10 @@ package be.octave.springbootvaadin;
 import be.octave.springbootvaadin.components.AddTodoForm;
 import be.octave.springbootvaadin.components.MainLayout;
 import be.octave.springbootvaadin.components.TodoList;
+import com.github.appreciated.app.layout.annotations.MenuCaption;
+import com.github.appreciated.app.layout.annotations.MenuIcon;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.applayout.AppLayout;
-import com.vaadin.flow.component.applayout.AppLayoutMenu;
-import com.vaadin.flow.component.applayout.AppLayoutMenuItem;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -23,13 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import sun.management.snmp.util.MibLogger;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Route("")
+
+@Route(value = "", layout = MainLayout.class)
 public class MainView extends VerticalLayout implements TodoHandler {
 
     Logger LOG = LoggerFactory.getLogger(MainView.class);
@@ -44,7 +41,6 @@ public class MainView extends VerticalLayout implements TodoHandler {
         this.todoService = todoService;
         this.todoRepository = todoRepository;
 
-        MainLayout mainLayout = new MainLayout();
 
         Component header = new H2(getTranslation("header"));
         Component addForm = new AddTodoForm(this);
@@ -53,10 +49,8 @@ public class MainView extends VerticalLayout implements TodoHandler {
 
         this.todoList.setDataProvider(DataProvider.fromCallbacks(this::findBy, this::countBy));
 
-        VerticalLayout content = new VerticalLayout(header, addForm, todoList);
-        content.setHeight("75vh");
-        mainLayout.setContent(content);
-        add(mainLayout);
+        setHeight("75vh");
+        add(header, addForm, todoList);
     }
 
     private void logout() {
