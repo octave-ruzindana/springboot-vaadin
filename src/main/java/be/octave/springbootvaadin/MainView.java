@@ -1,9 +1,16 @@
 package be.octave.springbootvaadin;
 
 import be.octave.springbootvaadin.components.AddTodoForm;
+import be.octave.springbootvaadin.components.MainLayout;
 import be.octave.springbootvaadin.components.TodoList;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.applayout.AppLayout;
+import com.vaadin.flow.component.applayout.AppLayoutMenu;
+import com.vaadin.flow.component.applayout.AppLayoutMenuItem;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.provider.DataProvider;
@@ -37,15 +44,23 @@ public class MainView extends VerticalLayout implements TodoHandler {
         this.todoService = todoService;
         this.todoRepository = todoRepository;
 
-        Component header = new H2("My todo List");
+        MainLayout mainLayout = new MainLayout();
+
+        Component header = new H2(getTranslation("header"));
         Component addForm = new AddTodoForm(this);
         this.todoList = new TodoList(this);
 //        this.todoList.setItems(todoService.findAll()); // for in-memory sorting
 
         this.todoList.setDataProvider(DataProvider.fromCallbacks(this::findBy, this::countBy));
 
-        setHeight("100vh");
-        add(header,addForm, todoList);
+        VerticalLayout content = new VerticalLayout(header, addForm, todoList);
+        content.setHeight("75vh");
+        mainLayout.setContent(content);
+        add(mainLayout);
+    }
+
+    private void logout() {
+        LOG.info("Logged out");
     }
 
     private int countBy(Query<Todo, Void> query) {

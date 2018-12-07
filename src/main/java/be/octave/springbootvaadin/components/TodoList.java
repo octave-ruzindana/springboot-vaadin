@@ -13,10 +13,12 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.i18n.LocaleChangeEvent;
+import com.vaadin.flow.i18n.LocaleChangeObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TodoList extends Grid<Todo> {
+public class TodoList extends Grid<Todo> implements LocaleChangeObserver {
 
     Logger LOG = LoggerFactory.getLogger(TodoList.class);
 
@@ -34,10 +36,16 @@ public class TodoList extends Grid<Todo> {
                 //.setComparator(Comparator.comparing(Todo::getTitle))
                 .setSortable(true)
                 .setSortProperty("title")
-                .setHeader("Title");
+                .setHeader(getTranslation("title"));
 
-        this.addColumn(new ComponentRenderer<>(this::renderCompleted)).setHeader("Done ?");
+        this.addColumn(new ComponentRenderer<>(this::renderCompleted)).setHeader(getTranslation("done"));
         this.addColumn(new ComponentRenderer<>(this::renderActions));
+    }
+
+    @Override
+    public void localeChange(LocaleChangeEvent event) {
+        LOG.info("Locale changed to  {}", event.getLocale());
+        //setText(getTranslation("my.translation", getUserId()));
     }
 
 

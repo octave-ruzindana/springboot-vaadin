@@ -28,17 +28,17 @@ public class AddTodoForm extends HorizontalLayout {
         this.todoHandler = todoHandler;
 
         this.title = new TextField();
-        this.title.setPlaceholder("What do you want to do ?");
+        this.title.setPlaceholder(getTranslation("placeholder"));
         this.title.setWidth("20em");
 
         binder.forField(this.title)
-                .withValidator(title -> title.length() > 8,"Must be at least 8 caracters long")
+                .withValidator(title -> title.length() > 8,getTranslation("validation.length"))
                 .bind(Todo::getTitle, Todo::setTitle);
         binder.setBean(new Todo("",false));
 
         this.title.addKeyUpListener(Key.ENTER, keyUpEvent -> onAddedTodo());
 
-        this.button = new Button("Add", VaadinIcon.PLUS.create(),
+        this.button = new Button(getTranslation("add"), VaadinIcon.PLUS.create(),
                 event -> this.onAddedTodo());
         add(title, button);
 
