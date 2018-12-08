@@ -1,5 +1,6 @@
-package be.octave.springbootvaadin;
+package be.octave.springbootvaadin.services;
 
+import be.octave.springbootvaadin.domain.Todo;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

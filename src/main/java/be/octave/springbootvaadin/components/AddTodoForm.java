@@ -1,7 +1,7 @@
 package be.octave.springbootvaadin.components;
 
-import be.octave.springbootvaadin.Todo;
-import be.octave.springbootvaadin.TodoHandler;
+import be.octave.springbootvaadin.domain.Todo;
+import be.octave.springbootvaadin.services.TodoHandler;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.VaadinIcon;

@@ -1,13 +1,14 @@
-package be.octave.springbootvaadin;
+package be.octave.springbootvaadin.views;
 
+import be.octave.springbootvaadin.domain.Todo;
+import be.octave.springbootvaadin.services.TodoHandler;
+import be.octave.springbootvaadin.services.TodoRepository;
+import be.octave.springbootvaadin.services.TodoService;
 import be.octave.springbootvaadin.components.AddTodoForm;
 import be.octave.springbootvaadin.components.MainLayout;
 import be.octave.springbootvaadin.components.TodoList;
-import com.github.appreciated.app.layout.annotations.MenuCaption;
-import com.github.appreciated.app.layout.annotations.MenuIcon;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.provider.DataProvider;

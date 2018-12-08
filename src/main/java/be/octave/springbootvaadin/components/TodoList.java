@@ -1,7 +1,7 @@
 package be.octave.springbootvaadin.components;
 
-import be.octave.springbootvaadin.Todo;
-import be.octave.springbootvaadin.TodoHandler;
+import be.octave.springbootvaadin.domain.Todo;
+import be.octave.springbootvaadin.services.TodoHandler;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
@@ -18,7 +18,7 @@ import com.vaadin.flow.i18n.LocaleChangeObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TodoList extends Grid<Todo> implements LocaleChangeObserver {
+public class TodoList extends Grid<Todo> {
 
     Logger LOG = LoggerFactory.getLogger(TodoList.class);
 
@@ -40,12 +40,6 @@ public class TodoList extends Grid<Todo> implements LocaleChangeObserver {
 
         this.addColumn(new ComponentRenderer<>(this::renderCompleted)).setHeader(getTranslation("done"));
         this.addColumn(new ComponentRenderer<>(this::renderActions));
-    }
-
-    @Override
-    public void localeChange(LocaleChangeEvent event) {
-        LOG.info("Locale changed to  {}", event.getLocale());
-        //setText(getTranslation("my.translation", getUserId()));
     }
 
 

@@ -1,4 +1,4 @@
-package be.octave.springbootvaadin;
+package be.octave.springbootvaadin.config;
 
 import com.vaadin.flow.i18n.I18NProvider;
 import org.springframework.beans.factory.annotation.Autowired;

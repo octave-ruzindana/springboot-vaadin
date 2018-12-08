@@ -1,4 +1,4 @@
-package be.octave.springbootvaadin;
+package be.octave.springbootvaadin.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

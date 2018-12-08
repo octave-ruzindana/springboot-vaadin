@@ -1,4 +1,6 @@
-package be.octave.springbootvaadin;
+package be.octave.springbootvaadin.services;
+
+import be.octave.springbootvaadin.domain.Todo;
 
 public interface TodoHandler {
 
