@@ -9,12 +9,10 @@ import com.github.appreciated.app.layout.component.appbar.AppBarBuilder;
 import com.github.appreciated.app.layout.component.appmenu.left.LeftNavigationComponent;
 import com.github.appreciated.app.layout.component.appmenu.left.LeftSubmenuComponent;
 import com.github.appreciated.app.layout.component.appmenu.left.builder.LeftAppMenuBuilder;
-import com.github.appreciated.app.layout.component.appmenu.left.builder.LeftSubMenuBuilder;
 import com.github.appreciated.app.layout.design.AppLayoutDesign;
 import com.github.appreciated.app.layout.notification.DefaultNotificationHolder;
 import com.github.appreciated.app.layout.notification.component.AppBarNotificationButton;
 import com.github.appreciated.app.layout.router.AppLayoutRouterLayout;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.page.Viewport;
@@ -23,7 +21,7 @@ import com.vaadin.flow.i18n.LocaleChangeObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Locale;
+import java.util.Arrays;
 
 
 @Push
@@ -34,6 +32,7 @@ public class MainLayout extends AppLayoutRouterLayout implements LocaleChangeObs
 
     private LeftNavigationComponent homeMenuItem;
     private LeftNavigationComponent signOutMenuItem;
+    private LeftSubmenuComponent tasksParentSubMenu;
     private LeftNavigationComponent completedTasksSubMenuItem;
     private LeftNavigationComponent ongoingTasksSubMenuItem;
 
@@ -43,6 +42,8 @@ public class MainLayout extends AppLayoutRouterLayout implements LocaleChangeObs
 
         homeMenuItem.setText(getTranslation("menu.home"));
         signOutMenuItem.setText(getTranslation("menu.signout"));
+
+        tasksParentSubMenu.getItem().setText(getTranslation("menu.tasks"));
         completedTasksSubMenuItem.setText(getTranslation("menu.tasks.completed"));
         ongoingTasksSubMenuItem.setText(getTranslation("menu.tasks.ongoing"));
     }
@@ -56,8 +57,9 @@ public class MainLayout extends AppLayoutRouterLayout implements LocaleChangeObs
         signOutMenuItem = new LeftNavigationComponent(getTranslation("menu.signout"), VaadinIcon.SIGN_OUT.create(), LoginView.class);
 
         completedTasksSubMenuItem = new LeftNavigationComponent(getTranslation("menu.tasks.completed"), VaadinIcon.CHECK.create(), MainView.class);
-        ongoingTasksSubMenuItem = new LeftNavigationComponent(getTranslation("menu.tasks.ongoing"), VaadinIcon.SPINNER.create(), MainView.class);
+        ongoingTasksSubMenuItem = new LeftNavigationComponent(getTranslation("menu.tasks.ongoing"), VaadinIcon.QUESTION.create(), MainView.class);
 
+        tasksParentSubMenu = new LeftSubmenuComponent(getTranslation("menu.tasks"), VaadinIcon.TASKS.create(), Arrays.asList(completedTasksSubMenuItem, ongoingTasksSubMenuItem));
         return AppLayoutBuilder
                 .get(Behaviour.LEFT_HYBRID)
                 .withTitle("Ultra Todo")
@@ -71,14 +73,11 @@ public class MainLayout extends AppLayoutRouterLayout implements LocaleChangeObs
                         .get()
                         .add(homeMenuItem)
                         .add(signOutMenuItem)
-                        .add(LeftSubMenuBuilder.get(getTranslation("menu.tasks"), VaadinIcon.TASKS.create())
-                                .add(completedTasksSubMenuItem)
-                                .add(ongoingTasksSubMenuItem)
-                                .build()
-                        )
+                        .add(tasksParentSubMenu)
                         .build())
                 .withIconComponent(VaadinIcon.NOTEBOOK.create())
                 .build();
+
 
     }
 }
