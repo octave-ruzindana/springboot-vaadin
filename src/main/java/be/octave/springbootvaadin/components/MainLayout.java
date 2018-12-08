@@ -1,7 +1,6 @@
 package be.octave.springbootvaadin.components;
 
-import be.octave.springbootvaadin.views.LoginView;
-import be.octave.springbootvaadin.views.MainView;
+import be.octave.springbootvaadin.views.*;
 import com.github.appreciated.app.layout.behaviour.AppLayout;
 import com.github.appreciated.app.layout.behaviour.Behaviour;
 import com.github.appreciated.app.layout.builder.AppLayoutBuilder;
@@ -53,13 +52,14 @@ public class MainLayout extends AppLayoutRouterLayout implements LocaleChangeObs
         DefaultNotificationHolder notifications = new DefaultNotificationHolder(newStatus -> {
         });
 
-        homeMenuItem = new LeftNavigationComponent(getTranslation("menu.home"), VaadinIcon.HOME.create(), MainView.class);
+        homeMenuItem = new LeftNavigationComponent(getTranslation("menu.home"), VaadinIcon.HOME.create(), HomeView.class);
         signOutMenuItem = new LeftNavigationComponent(getTranslation("menu.signout"), VaadinIcon.SIGN_OUT.create(), LoginView.class);
 
-        completedTasksSubMenuItem = new LeftNavigationComponent(getTranslation("menu.tasks.completed"), VaadinIcon.CHECK.create(), MainView.class);
-        ongoingTasksSubMenuItem = new LeftNavigationComponent(getTranslation("menu.tasks.ongoing"), VaadinIcon.QUESTION.create(), MainView.class);
+        completedTasksSubMenuItem = new LeftNavigationComponent(getTranslation("menu.tasks.completed"), VaadinIcon.CHECK.create(), CompletedView.class);
+        ongoingTasksSubMenuItem = new LeftNavigationComponent(getTranslation("menu.tasks.ongoing"), VaadinIcon.QUESTION.create(), OngoingView.class);
 
         tasksParentSubMenu = new LeftSubmenuComponent(getTranslation("menu.tasks"), VaadinIcon.TASKS.create(), Arrays.asList(completedTasksSubMenuItem, ongoingTasksSubMenuItem));
+
         return AppLayoutBuilder
                 .get(Behaviour.LEFT_HYBRID)
                 .withTitle("Ultra Todo")
@@ -72,12 +72,11 @@ public class MainLayout extends AppLayoutRouterLayout implements LocaleChangeObs
                 .withAppMenu(LeftAppMenuBuilder
                         .get()
                         .add(homeMenuItem)
-                        .add(signOutMenuItem)
                         .add(tasksParentSubMenu)
+                        .add(signOutMenuItem)
                         .build())
                 .withIconComponent(VaadinIcon.NOTEBOOK.create())
                 .build();
-
 
     }
 }

@@ -10,7 +10,7 @@ public class LanguageChooser extends ComboBox<Locale> {
     public LanguageChooser() {;
         this.setItems(new Locale("fr", "be"), new Locale("nl", "be"));
         this.addValueChangeListener(event -> changeLanguage(event.getValue()));
-        //this.getStyle().set("background-color","white");
+        this.getStyle().set("background-color","white");
     }
 
     private void changeLanguage(Locale value) {

@@ -10,36 +10,38 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
-import com.vaadin.flow.i18n.LocaleChangeEvent;
-import com.vaadin.flow.i18n.LocaleChangeObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TodoList extends Grid<Todo> {
+public class TodoList extends VerticalLayout {
 
     Logger LOG = LoggerFactory.getLogger(TodoList.class);
 
     private final TodoHandler handler;
     private Binder<Todo> todoBinder = new Binder<>(Todo.class);
-
+    private Grid<Todo> grid = new Grid<>();
     public TodoList(TodoHandler handler) {
         LOG.info("****** instatiating Grid");
 
         this.handler = handler;
         this.setSizeFull();
-        this.addColumn(Todo::getId).
+        grid.setHeight("75vh");
+        grid.addColumn(Todo::getId).
                 setHeader("#");
-        this.addColumn(new ComponentRenderer<>(this::renderTitle))
+        grid.addColumn(new ComponentRenderer<>(this::renderTitle))
                 //.setComparator(Comparator.comparing(Todo::getTitle))
                 .setSortable(true)
                 .setSortProperty("title")
                 .setHeader(getTranslation("title"));
 
-        this.addColumn(new ComponentRenderer<>(this::renderCompleted)).setHeader(getTranslation("done"));
-        this.addColumn(new ComponentRenderer<>(this::renderActions));
+        grid.addColumn(new ComponentRenderer<>(this::renderCompleted)).setHeader(getTranslation("done"));
+        grid.addColumn(new ComponentRenderer<>(this::renderActions));
+        add(grid);
     }
 
 
@@ -72,18 +74,18 @@ public class TodoList extends Grid<Todo> {
 
     private void cancelTitleEdition(Todo todo) {
         todo.setEditable(false);
-        this.getDataProvider().refreshItem(todo);
+        grid.getDataProvider().refreshItem(todo);
     }
 
     private void updateTitle(Todo todo) {
         this.handler.onUpdateTodo(todo);
         todo.setEditable(false);
-        this.getDataProvider().refreshItem(todo);
+        grid.getDataProvider().refreshItem(todo);
     }
 
     private void startTitleEdition(Todo todo) {
         todo.setEditable(true);
-        this.getDataProvider().refreshItem(todo);
+        grid.getDataProvider().refreshItem(todo);
     }
 
     public Component renderActions(Todo todo) {
@@ -101,4 +103,15 @@ public class TodoList extends Grid<Todo> {
     }
 
 
+    public DataProvider<Todo, ?> getDataProvider() {
+        return this.grid.getDataProvider();
+    }
+
+    public void setDataProvider(DataProvider<Todo, ?> dataProvider){
+     this.grid.setDataProvider(dataProvider);
+    }
+
+    public Grid<Todo> getGrid() {
+        return grid;
+    }
 }
