@@ -2,6 +2,7 @@ package be.octave.springbootvaadin.services;
 
 import be.octave.springbootvaadin.domain.Todo;
 import be.octave.springbootvaadin.domain.TodoFilter;
+import be.octave.springbootvaadin.domain.TodoStatus;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.data.provider.SortDirection;
 import org.apache.commons.lang3.NotImplementedException;
@@ -71,10 +72,12 @@ public class TodoService {
     }
 
     private Specification<Todo> getSpecificationFromFilter(TodoFilter filter) {
-        if(filter.getCompleted().equals(true)){
+        if(filter.getStatus().equals(TodoStatus.COMPLETED)){
             return TodoSpecification.isComplete();
-        }else {
+        }else if (filter.getStatus().equals(TodoStatus.ONGOING)){
             return TodoSpecification.isOnGoing();
+        }else {
+            return TodoSpecification.all();
         }
     }
 

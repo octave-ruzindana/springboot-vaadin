@@ -2,13 +2,13 @@ package be.octave.springbootvaadin.domain;
 
 public class TodoFilter {
 
-    private Boolean completed;
+    private TodoStatus status;
 
-    public void withCompletedStatus(boolean completed) {
-        this.completed = completed;
+    public TodoStatus getStatus() {
+        return status;
     }
 
-    public Boolean getCompleted() {
-        return completed;
+    public void setStatus(TodoStatus status) {
+        this.status = status;
     }
 }

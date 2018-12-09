@@ -55,8 +55,8 @@ public class MainLayout extends AppLayoutRouterLayout implements LocaleChangeObs
         homeMenuItem = new LeftNavigationComponent(getTranslation("menu.home"), VaadinIcon.HOME.create(), HomeView.class);
         signOutMenuItem = new LeftNavigationComponent(getTranslation("menu.signout"), VaadinIcon.SIGN_OUT.create(), LoginView.class);
 
-        completedTasksSubMenuItem = new LeftNavigationComponent(getTranslation("menu.tasks.completed"), VaadinIcon.CHECK.create(), CompletedView.class);
-        ongoingTasksSubMenuItem = new LeftNavigationComponent(getTranslation("menu.tasks.ongoing"), VaadinIcon.QUESTION.create(), OngoingView.class);
+        completedTasksSubMenuItem = new LeftNavigationComponent(getTranslation("menu.tasks.completed"), VaadinIcon.CHECK.create(), CompletedTodoView.class);
+        ongoingTasksSubMenuItem = new LeftNavigationComponent(getTranslation("menu.tasks.ongoing"), VaadinIcon.QUESTION.create(), OngoingTodoView.class);
 
         tasksParentSubMenu = new LeftSubmenuComponent(getTranslation("menu.tasks"), VaadinIcon.TASKS.create(), Arrays.asList(completedTasksSubMenuItem, ongoingTasksSubMenuItem));
 

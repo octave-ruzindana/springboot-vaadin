@@ -5,6 +5,7 @@ import be.octave.springbootvaadin.components.MainLayout;
 import be.octave.springbootvaadin.components.TodoList;
 import be.octave.springbootvaadin.domain.Todo;
 import be.octave.springbootvaadin.domain.TodoFilter;
+import be.octave.springbootvaadin.domain.TodoStatus;
 import be.octave.springbootvaadin.services.TodoHandler;
 import be.octave.springbootvaadin.services.TodoService;
 import com.vaadin.flow.component.Component;
@@ -23,16 +24,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 @Route(value = "todos", layout = MainLayout.class)
-public class AllView extends VerticalLayout implements TodoHandler, HasUrlParameter<Boolean> {
+public class TodoView extends VerticalLayout implements TodoHandler, HasUrlParameter<String> {
 
-    Logger LOG = LoggerFactory.getLogger(AllView.class);
+    Logger LOG = LoggerFactory.getLogger(TodoView.class);
 
     private TodoService todoService;
     private TodoList todoList;
     ConfigurableFilterDataProvider<Todo, Void, TodoFilter> configurableFilterDataProvider;
 
     @Autowired
-    public AllView(TodoService todoService) {
+    public TodoView(TodoService todoService) {
         LOG.info("************ instatiating Main view");
         this.todoService = todoService;
 
@@ -71,16 +72,21 @@ public class AllView extends VerticalLayout implements TodoHandler, HasUrlParame
     }
 
     @Override
-    public void setParameter(BeforeEvent beforeEvent, @OptionalParameter Boolean complete) {
-        if (complete != null) {
-            TodoFilter todoFilter = new TodoFilter();
-            if (complete.equals(true)) {
-                todoFilter.withCompletedStatus(true);
-            } else {
-                todoFilter.withCompletedStatus(false);
+    public void setParameter(BeforeEvent beforeEvent, @OptionalParameter String status) {
+        TodoFilter todoFilter = new TodoFilter();
+        if (status != null) {
+            if (status.equals(TodoStatus.COMPLETED.getLabel())) {
+                todoFilter.setStatus(TodoStatus.COMPLETED);
+            } else if (status.equals(TodoStatus.ONGOING.getLabel())) {
+                todoFilter.setStatus(TodoStatus.ONGOING);
+            }else {
+                todoFilter.setStatus(TodoStatus.ALL);
             }
             configurableFilterDataProvider.setFilter(todoFilter);
-            LOG.info("--------- Displaying todos with parameter {}", complete);
+            LOG.info("--------- Displaying todos with parameter {}", status);
+        } else {
+            todoFilter.setStatus(TodoStatus.ALL);
+            LOG.info("--------- Displaying todos without specific status");
         }
     }
 }
