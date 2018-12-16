@@ -2,12 +2,12 @@
 Todo list app with spring boot and vaadin 11
 
 # Evaluation
-Great for developers with SWING background.
-Great for developers who do not know or do not want to mess with javascript and html (and it's toolings)
-Great if you do not want to expose a web service for every single use case. Just plain java services.
+- Great for developers with SWING background.
+- Great for developers who do not know or do not want to mess with javascript and html (and it's toolings)
+- Great if you do not want to expose a web service for every single use case. Just plain java services.
 
-Not so good for UI personalisation (standard theme).
-Not so good if you need a component or behaviour that is not included in standard library. 
+- Not so good for UI personalisation (standard theme).
+- Not so good if you need a component or behaviour that is not included in standard library. 
 
 ## Productivity
 - Great
@@ -35,7 +35,7 @@ Not so good if you need a component or behaviour that is not included in standar
 ## Learning
 
  - Great
-  - Needs to know java 8 (especially )
-  - Official Documentation is quite good 
+   - Needs to know java 8 (especially lambda and streams)
+   - Official Documentation is quite good 
  - Not so great
-  - Not much help outside of official doc (stackoverflow,..), specially for the last version (vaadin 10 and ongoing) 
+   - Not much help outside of official doc (stackoverflow,..), specially for the last version (vaadin 10 and ongoing) 
