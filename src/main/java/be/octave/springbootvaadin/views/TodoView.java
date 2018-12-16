@@ -4,8 +4,10 @@ import be.octave.springbootvaadin.components.AddTodoForm;
 import be.octave.springbootvaadin.components.MainLayout;
 import be.octave.springbootvaadin.components.TodoList;
 import be.octave.springbootvaadin.domain.Todo;
+import be.octave.springbootvaadin.domain.TodoCounter;
 import be.octave.springbootvaadin.domain.TodoFilter;
 import be.octave.springbootvaadin.domain.TodoStatus;
+import be.octave.springbootvaadin.events.CounterChangeEvent;
 import be.octave.springbootvaadin.services.TodoHandler;
 import be.octave.springbootvaadin.services.TodoService;
 import com.vaadin.flow.component.Component;
@@ -49,8 +51,19 @@ public class TodoView extends VerticalLayout implements TodoHandler, HasUrlParam
 
         this.todoList.setDataProvider(configurableFilterDataProvider);
         add(header, addForm, todoList);
+
+        todoList.addCounterChangeListener(this::onCounterChange);
     }
 
+
+    public void onCounterChange(CounterChangeEvent event){
+
+        TodoCounter todoCounter = new TodoCounter(
+                todoService.countByStatus(true),
+                todoService.countByStatus(false)
+        );
+        Notification.show(todoCounter.getCompleted()+" completed tasks on a total of " + todoCounter.getTotal()  );
+    }
 
     @Override
     public void onAddedTodo(Todo newTodo) {

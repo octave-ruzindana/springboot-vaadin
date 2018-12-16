@@ -13,4 +13,6 @@ public interface TodoRepository extends PagingAndSortingRepository<Todo,Integer>
     @Override
     List<Todo> findAll();
 
+    Long countByCompleted(Boolean status);
+
 }

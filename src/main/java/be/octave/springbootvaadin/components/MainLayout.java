@@ -1,6 +1,10 @@
 package be.octave.springbootvaadin.components;
 
-import be.octave.springbootvaadin.views.*;
+import be.octave.springbootvaadin.events.CounterChangeEvent;
+import be.octave.springbootvaadin.views.CompletedTodoView;
+import be.octave.springbootvaadin.views.HomeView;
+import be.octave.springbootvaadin.views.LoginView;
+import be.octave.springbootvaadin.views.OngoingTodoView;
 import com.github.appreciated.app.layout.behaviour.AppLayout;
 import com.github.appreciated.app.layout.behaviour.Behaviour;
 import com.github.appreciated.app.layout.builder.AppLayoutBuilder;
@@ -13,6 +17,7 @@ import com.github.appreciated.app.layout.notification.DefaultNotificationHolder;
 import com.github.appreciated.app.layout.notification.component.AppBarNotificationButton;
 import com.github.appreciated.app.layout.router.AppLayoutRouterLayout;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.page.Viewport;
 import com.vaadin.flow.i18n.LocaleChangeEvent;
@@ -35,6 +40,8 @@ public class MainLayout extends AppLayoutRouterLayout implements LocaleChangeObs
     private LeftNavigationComponent completedTasksSubMenuItem;
     private LeftNavigationComponent ongoingTasksSubMenuItem;
 
+    private Logger logger = LoggerFactory.getLogger(CounterChangeEvent.class);
+
     @Override
     public void localeChange(LocaleChangeEvent localeChangeEvent) {
         LOG.info("Locale changed to  {}", localeChangeEvent.getLocale());
@@ -45,6 +52,7 @@ public class MainLayout extends AppLayoutRouterLayout implements LocaleChangeObs
         tasksParentSubMenu.getItem().setText(getTranslation("menu.tasks"));
         completedTasksSubMenuItem.setText(getTranslation("menu.tasks.completed"));
         ongoingTasksSubMenuItem.setText(getTranslation("menu.tasks.ongoing"));
+        completedTasksSubMenuItem.setClickListener(event -> Notification.show("clicked"));
     }
 
     @Override
@@ -59,6 +67,9 @@ public class MainLayout extends AppLayoutRouterLayout implements LocaleChangeObs
         ongoingTasksSubMenuItem = new LeftNavigationComponent(getTranslation("menu.tasks.ongoing"), VaadinIcon.QUESTION.create(), OngoingTodoView.class);
 
         tasksParentSubMenu = new LeftSubmenuComponent(getTranslation("menu.tasks"), VaadinIcon.TASKS.create(), Arrays.asList(completedTasksSubMenuItem, ongoingTasksSubMenuItem));
+
+        //MenuBadgeComponent ongoingCounter = new MenuBadgeComponent("10");
+       // ongoingTasksSubMenuItem.add(ongoingCounter);
 
         return AppLayoutBuilder
                 .get(Behaviour.LEFT_HYBRID)
@@ -79,4 +90,6 @@ public class MainLayout extends AppLayoutRouterLayout implements LocaleChangeObs
                 .build();
 
     }
+
+
 }

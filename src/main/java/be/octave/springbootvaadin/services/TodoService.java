@@ -102,4 +102,8 @@ public class TodoService {
         }
 
     }
+
+    public Long countByStatus(boolean completed) {
+        return todoRepository.countByCompleted(completed);
+    }
 }

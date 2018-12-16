@@ -1,8 +1,10 @@
 package be.octave.springbootvaadin.components;
 
 import be.octave.springbootvaadin.domain.Todo;
+import be.octave.springbootvaadin.events.CounterChangeEvent;
 import be.octave.springbootvaadin.services.TodoHandler;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -13,8 +15,10 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.provider.DataChangeEvent;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.shared.Registration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -109,9 +113,14 @@ public class TodoList extends VerticalLayout {
 
     public void setDataProvider(DataProvider<Todo, ?> dataProvider){
      this.grid.setDataProvider(dataProvider);
+     dataProvider.addDataProviderListener(this::handleDataChangeEvent);
     }
 
-    public Grid<Todo> getGrid() {
-        return grid;
+    public void handleDataChangeEvent(DataChangeEvent<Todo> dataChangeEvent){
+        fireEvent(new CounterChangeEvent(this, false));
+    }
+
+    public Registration addCounterChangeListener(ComponentEventListener<CounterChangeEvent> listener) {
+        return addListener(CounterChangeEvent.class, listener);
     }
 }
